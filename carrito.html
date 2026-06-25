@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Carrito - Tienda de Botargas</title>
+    <link rel="stylesheet" href="styles.css">
+      
+</head>
+<body>
+    <header style="padding: 15px; background: #333; text-align: center;">
+    <a href="productos.html" style="text-decoration: none; display: inline-block;">
+        <img src="botar.png" alt="Solutions Shield" style="height: 60px; width: auto; object-fit: contain; vertical-align: middle;">
+    </a>
+</header>
+    <main class="carrito-container">
+        <a href="productos.html" class="btn-volver">← Volver al catálogo</a>
+        <a href="carrito.html" class="btn-carrito-nav">🛒 Carrito <span id="cart-count">0</span></a>
+    
+        
+        <h1>Tu Carrito de Compras</h1>
+
+        <div id="carrito-contenido">
+            </div>
+
+        <div class="carrito-total" id="carrito-total-seccion">
+            Total: <span id="total-precio">$0.00 MXN</span>
+        </div>
+        <div style="text-align: right; margin-top: 20px;">
+    <a href="checkout.html" class="btn-comprar-ahora">Comprar ahora</a>
+</div>
+    </main>
+
+    <footer style="padding: 20px; background: #222; color: #aaa; text-align: center; margin-top: 40px;">
+        <p>&copy; 2026 Tienda de Botargas. Pie de página.</p>
+    </footer>
+
+    <script>
+        // Base de datos duplicada para que el carrito sepa qué foto y nombre jalar usando el ID
+        const productosDB = {
+            "1": { name: "Botarga de Doctor Simi", price: 9000, img: "bo1.png" },
+            "2": { name: "Botarga de Dragon", price: 700, img: "bo2.png" },
+            "3": { name: "Botarga de Alien humano", price: 700, img: "bo3.png" },
+            "4": { name: "Botarga de Caballo", price: 600, img: "bo4.png" },
+            "5": { name: "Botarga de Tiburon", price: 600, img: "bo5.png" },
+            "6": { name: "Botarga de Rana", price: 500, img: "bo6.png" },
+            "7": { name: "Botarga de Vaca", price: 700, img: "bo7.png" },
+            "8": { name: "Botarga de Pikachu", price: 500, img: "bo8.png" },
+            "9": { name: "Botarga de Unicornio", price: 600, img: "bo9.png" },
+            "10": { name: "Botarga de Toro", price: 600, img: "bo10.png" },
+            "11": { name: "Botarga de Olaf", price: 400, img: "bo11.png" },
+            "12": { name: "Botarga de Mario Bros", price: 600, img: "bo12.png" },
+            "13": { name: "Botarga de Dinosaruio Esqueleto", price: 600, img: "bo13.png" },
+            "14": { name: "Botarga de Baymax", price: 500, img: "bo14.png" },
+            "15": { name: "Botarga de Mamado", price: 500, img: "bo15.png" },
+            "16": { name: "Botarga de Conejo", price: 500, img: "bo16.png" },
+            "17": { name: "Botarga de Gallo", price: 600, img: "bo17.png" },
+            "18": { name: "Botarga de Galleta", price: 600, img: "bo18.png" },
+            "19": { name: "Botarga de Santa Clous", price: 700, img: "bo19.png" },
+            "20": { name: "Botarga de Corazon", price: 600, img: "bo20.png" }
+        };
+
+        // Simulación de los artículos seleccionados basándonos en tu contador (ejemplo simplificado)
+        // Para esta práctica, si el usuario tiene elementos guardados en 'cantidadCarrito', meteremos el producto actual o los IDs seleccionados.
+        // Nota: Como por ahora sólo guardas un "número de ítems" general, simularemos que agregaste el ítem basándonos en lo que guardó tu localStorage.
+        
+       // 2. FUNCIÓN CORREGIDA: Cargar y calcular el total sin errores
+    // 1. FUNCIÓN PRINCIPAL DE CARGA DEL CARRITO SINCRO
+// 1. FUNCIÓN PRINCIPAL DE CARGA DEL CARRITO SINCRO (ACTUALIZADA CON NOMBRE Y PRECIO DINÁMICO)
+// 1. FUNCIÓN PRINCIPAL DE CARGA DEL CARRITO SINCRO (SOPORTA PRODUCTOS NUEVOS E IMÁGENES)
+function cargarCarrito() {
+    const contenedor = document.getElementById('carrito-contenido');
+    const txtTotal = document.getElementById('total-precio');
+    const seccionTotal = document.getElementById('carrito-total-seccion');
+    
+    contenedor.innerHTML = "";
+    
+    let totalGeneral = 0;
+    let tieneProductos = false;
+    let sumaContadorMenu = 0; 
+
+    // Jalamos la base de datos sincronizada del Administrador
+    const inventarioGlobal = JSON.parse(localStorage.getItem('inventarioBotargas')) || [];
+
+    // 🚀 CAMBIO CLAVE: Ahora recorremos TODO lo que el admin tiene controlado (viejo y nuevo)
+    inventarioGlobal.forEach(prodAdmin => {
+        const idNumerico = prodAdmin.id;
+        
+        // El stock inicial base de tu tienda (asumiendo 15 o el que uses de tope)
+        const stockOriginalBase = 15; 
+
+        // Si el stock actual es menor que su capacidad base, significa que el cliente se llevó piezas
+        if (prodAdmin.stock < stockOriginalBase) {
+            const cantidadComprada = stockOriginalBase - prodAdmin.stock;
+            
+            // Buscamos si existe en la base local fija (para los 20 primeros)
+            const productoBase = typeof productosDB !== 'undefined' ? productosDB[idNumerico] : null;
+            
+            const nombreFinal = prodAdmin.nombre;
+            
+            // Calculamos el precio final aplicando el 20% de ganancia al costo inicial del admin
+            const precioFinalCalculado = prodAdmin.precioInicial * 1.20;
+            const subtotal = precioFinalCalculado * cantidadComprada;
+            
+            totalGeneral += subtotal;
+            sumaContadorMenu += cantidadComprada; 
+            tieneProductos = true;
+
+            // 🚀 CONTROL DE IMAGEN SEGURO:
+            // Si el admin subió una imagen personalizada la usa, si no, jala la de productosDB. Si no hay, usa una por defecto.
+            const imagenFinal = prodAdmin.img_custom 
+                ? prodAdmin.img_custom 
+                : (productoBase ? productoBase.img : 'botar.png');
+
+            const fila = document.createElement('div');
+            fila.className = 'carrito-item';
+            fila.innerHTML = `
+                <div class="item-info">
+                    <img src="${imagenFinal}" alt="${nombreFinal}" class="item-img" style="width: 70px; height: auto; border-radius: 5px;">
+                    <div>
+                        <div class="item-name">${nombreFinal} (x${cantidadComprada})</div>
+                        <div class="item-price">$${precioFinalCalculado.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN c/u</div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn-eliminar" onclick="eliminarDelCarrito(${idNumerico})">Eliminar</button>
+                </div>
+            `;
+            contenedor.appendChild(fila);
+        }
+    });
+
+    // Si el carrito está completamente vacío
+    if (!tieneProductos) {
+        contenedor.innerHTML = `<div class="carrito-vacio"><p>Tu carrito está vacío 🤔 ¡Ve al catálogo a buscar botargas!</p></div>`;
+        if (seccionTotal) seccionTotal.style.display = "none";
+        localStorage.setItem('cantidadCarrito', 0); 
+    } else {
+        if (seccionTotal) seccionTotal.style.display = "block";
+        if (txtTotal) txtTotal.innerText = `$${totalGeneral.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN`;
+        localStorage.setItem('cantidadCarrito', sumaContadorMenu);
+    }
+
+    actualizarContadorMenu();
+}
+
+// 2. FUNCIÓN PARA ELIMINAR REGRESANDO EL STOCK AL ADMINISTRADOR
+function eliminarDelCarrito(id) {
+    let inventarioGlobal = JSON.parse(localStorage.getItem('inventarioBotargas')) || [];
+    const index = inventarioGlobal.findIndex(p => p.id === id);
+    
+    if (index !== -1) {
+        // Le regresamos su stock completo por defecto (15 unidades)
+        inventarioGlobal[index].stock = 15;
+        localStorage.setItem('inventarioBotargas', JSON.stringify(inventarioGlobal));
+    }
+    
+    cargarCarrito();
+}
+
+// 3. Mantener al día el numerito del menú superior
+function actualizarContadorMenu() {
+    const badge = document.getElementById('cart-count');
+    const cantidad = localStorage.getItem('cantidadCarrito') || 0;
+    if (badge) badge.innerText = cantidad;
+}
+
+window.onload = cargarCarrito;
+    </script>
+</body>
+</html>

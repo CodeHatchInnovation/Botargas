@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botargas Shopping - Detalle de Producto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="back-container">
+            <a href="productos.html" class="back-btn">← Volver</a>
+        </div>
+
+        <div class="header-right">
+            <div class="cart-container">
+                <span class="cart-icon">🛒</span>
+                <span id="cart-count" class="cart-badge">0</span>
+            </div>
+
+            <div class="menu-container">
+                <button class="menu-btn">☰ Menú</button>
+                <nav class="dropdown-menu">
+                    <a href="index.html">Inicio</a>
+                    <a href="productos.html">Productos</a>
+                    <a href="#contacto">Contacto</a>
+                     <a href="carrito.html" class="cart-btn">
+                🛒 Carrito <span id="cart-count">0</span>
+                </a>
+                </li>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="brand-header">
+            <a href="index.html">
+                <img src="botar.png" alt="Logo Botargas Shopping" class="logo">
+            </a>
+            <h1 id="det-name">Cargando Producto...</h1>
+        </div>
+
+        <section class="detail-container">
+            <div class="detail-img-box">
+                <img id="det-img" src="" alt="Imagen del producto" class="detail-img">
+            </div>
+
+            <div class="detail-info-box">
+                <p id="det-price" class="detail-price">$0.00 MXN</p>
+                
+                <h3>Descripción del Producto:</h3>
+                <p id="det-description" class="detail-description">
+                    Cargando descripción...
+                </p>
+                <p id="product-stock" style="font-weight: bold; color: #2ecc71; margin-top: 10px;">
+        Stock disponible: 15 unidades
+    </p>
+
+                <div class="product-buttons">
+    <button id="btn-add-cart" class="btn-add-cart">Agregar al Carrito</button>
+    
+    <a href="carrito.html" id="btn-comprar" class="btn-comprar" style="text-decoration: none;">Comprar Ahora</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Botargas Shopping. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // ¡AQUÍ LO PONES! Justo al arrancar el script
+        let cantidadActual = parseInt(localStorage.getItem('cantidadCarrito')) || 0;
+        document.getElementById('cart-count').innerText = cantidadActual;
+
+        // 1. Lógica para leer el ID de la URL y cargar los datos correctos
+        const urlParams = new URLSearchParams(window.location.search);
+        // ... todo el resto de tu código que ya tenías abajo ...
+        // Base de datos de tus 20 productos (Nombres, precios y descripciones)
+        const productosDB = {
+            "1": { name: "Botarga de Doctor Simi", price: "$9,000 MXN", img: "bo1.png", desc: "La icónica botarga de Doctor Simi. Fabricada con materiales altamente resistentes de calidad premium, visibilidad de red optimizada y perfecta flexibilidad para realizar los mejores pasos de baile en tus eventos comerciales." },
+            "2": { name: "Botarga de Dragon", price: "$700.00 MXN", img: "bo2.png", desc: "Increíble y divertida botarga inflable de dragón. Súper cómoda y fresca gracias a su ventilador interno integrado que la mantiene inflada automáticamente todo el tiempo. ¡Ideal para fiestas temáticas!" },
+            "3": { name: "Botarga de Alien humano", price: "$700.00 MXN", img: "bo3.png", desc: "La sensación de las redes sociales. Esta botarga de Alien simula que estás siendo cargado por un extraterrestre, garantizando risas, fotos y un impacto visual único en cualquier activación o desfile." },
+            "4": { name: "Botarga de Caballo", price: "$600.00 MXN", img: "bo4.png", desc: "Divertido diseño inflable de vaquero montando a caballo. Material ligero que te permite moverte libremente, saltar y bailar cómodamente durante toda tu celebración." },
+            "5": { name: "Botarga de Tiburon", price: "$600.00 MXN", img: "bo5.png", desc: "Conviértete en el rey de los océanos con este divertido disfraz inflable de tiburón azul. Excelente opción para activaciones en restaurantes, marisquerías o eventos en albercas." },
+            "6": { name: "Botarga de Rana", price: "$500.00 MXN", img: "bo6.png", desc: "Carismática botarga de rana. Ideal para eventos infantiles, preescolares o campañas ambientales. Fabricada con texturas amigables y un diseño que encanta a los más pequeños." },
+            "7": { name: "Botarga de Vaca", price: "$700.00 MXN", img: "bo7.png", desc: "Clásica y llamativa botarga de vaca con manchas tradicionales. Excelente para negocios de lácteos, heladerías, cremerías o festivales agrícolas locales." },
+            "8": { name: "Botarga de Pikachu", price: "$500.00 MXN", img: "bo8.png", desc: "¡Atrápalos a todos! Espectacular diseño inflable inspirado en el ratón eléctrico favorito de los videojuegos. Es súper ligera, muy ventilada y se infla en cuestión de segundos." },
+            "9": { name: "Botarga de Unicornio", price: "$600.00 MXN", img: "bo9.png", desc: "Diseño mágico y colorido con cuerno dorado. Perfecta para cumpleaños infantiles o fiestas de fantasía, aportando un toque de color y alegría inolvidable." },
+            "10": { name: "Botarga de Toro", price: "$600.00 MXN", img: "bo10.png", desc: "Imponente y divertida botarga inflable de toro. Su diseño simula que vas montando sobre el animal, ideal para rodeos, ferias de pueblo o fiestas mexicanas." },
+            "11": { name: "Botarga de Olaf", price: "$400.00 MXN", img: "bo11.png", desc: "El muñeco de nieve más tierno y carismático del cine. Un gran acierto para celebraciones navideñas, cumpleaños infantiles o fiestas temáticas de invierno." },
+            "12": { name: "Botarga de Mario Bros", price: "$600.00 MXN", img: "bo12.png", desc: "El plomero más famoso del mundo de los videojuegos en tamaño gigante. Ideal para salones de fiestas infantiles, tiendas de tecnología o torneos de gaming." },
+            "13": { name: "Botarga de Dinosaruio Esqueleto", price: "$600.00 MXN", img: "bo13.png", desc: "Un diseño prehistórico con un giro espeluznante y genial. Ideal para festivales de Halloween, exposiciones de museos escolares o eventos temáticos nocturnos." },
+            "14": { name: "Botarga de Baymax", price: "$500.00 MXN", img: "bo14.png", desc: "Tu asistente médico personal inflable. Súper pachoncita, suave al tacto y gigante. Proporciona una presencia visual reconfortante que a todos les encanta abrazar." },
+            "15": { name: "Botarga de Mamado", price: "$500.00 MXN", img: "bo15.png", desc: "Divertidísima botarga inflable que simula un cuerpo hiper musculoso en traje de baño. Ideal para bromas, despedidas de soltero, gimnasios o activaciones cómicas de fitness." },
+            "16": { name: "Botarga de Conejo", price: "$500.00 MXN", img: "bo16.png", desc: "Diseño clásico de conejo blanco de peluche o tela suave. Excelente opción para dinámicas de Pascua, shows infantiles de magia y obras escolares." },
+            "17": { name: "Botarga de Gallo", price: "$600.00 MXN", img: "bo17.png", desc: "Llamativa y colorida botarga de gallo con cresta roja prominente. Es perfecta para pollerías, rosticerías o locales de comida que buscan atraer clientes desde la calle." },
+            "18": { name: "Botarga de Galleta", price: "$600.00 MXN", img: "bo18.png", desc: "Inspirada en el tierno hombre de jengibre navideño. Excelente para panaderías, pastelerías, o como elemento decorativo viviente durante las fiestas de fin de año." },
+            "19": { name: "Botarga de Santa Clous", price: "$700.00 MXN", img: "bo19.png", desc: "¡Llegó la Navidad! Botarga gigante e inflable de Santa Claus. Muy fácil de portar para el animador, ideal para plazas comerciales, entregas de regalos y fotos navideñas." },
+            "20": { name: "Botarga de Corazon", price: "$600.00 MXN", img: "bo20.png", desc: "La botarga más romántica de nuestra tienda. Ideal para activaciones el 14 de febrero (San Valentín), propuestas de matrimonio, florerías o para regalar abrazos gratis." }
+            };
+            // 
+     const productoId = urlParams.get('id') || "1"; 
+        const idNumerico = parseInt(productoId);
+        const infoProducto = productosDB[productoId];
+
+        // 1. LEER EL INVENTARIO GLOBAL
+        let inventarioGlobal = JSON.parse(localStorage.getItem('inventarioBotargas')) || [];
+
+        // Si no existe, lo inicializamos
+        if (inventarioGlobal.length === 0) {
+            for (let i = 1; i <= 20; i++) {
+                inventarioGlobal.push({
+                    id: i,
+                    nombre: productosDB[i]?.name || `Botarga Modelo ${i}`,
+                    precioInicial: 583.33,
+                    stock: 12
+                });
+            }
+            localStorage.setItem('inventarioBotargas', JSON.stringify(inventarioGlobal));
+        }
+
+        // 2. Buscamos el producto
+        let productoActual = inventarioGlobal.find(p => p.id === idNumerico);
+        
+        if (!productoActual) {
+            productoActual = { id: idNumerico, nombre: infoProducto?.name || "Botarga", stock: 12, precioInicial: 583.33 };
+        }
+
+        // ========================================================
+        // DESPLIEGUE DINÁMICO (ACTUALIZADO CON PRIORIDAD A PERSONALIZADO)
+        // ========================================================
+        if (infoProducto || productoActual) {
+            const nombreFinal = productoActual ? productoActual.nombre : infoProducto.name;
+            
+            const precioFinal = productoActual 
+                ? `$${(productoActual.precioInicial * 1.20).toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN` 
+                : infoProducto.price;
+
+            const imagenFinal = (productoActual && productoActual.img_custom) 
+                ? productoActual.img_custom 
+                : (infoProducto ? infoProducto.img : 'botar.png');
+
+            // 🚀 ESTA ES LA LÓGICA QUE CORREGIMOS
+            const descripcionFinal = (productoActual && productoActual.descripcion_custom) 
+                ? productoActual.descripcion_custom 
+                : (infoProducto && infoProducto.desc ? infoProducto.desc : "¡Nueva botarga exclusiva añadida por el administrador! Material premium inflable de alta durabilidad.");
+
+            // Inyectamos al HTML
+            document.getElementById('det-name').innerText = nombreFinal;
+            document.getElementById('det-price').innerText = precioFinal;
+            document.getElementById('det-img').src = imagenFinal;
+            document.getElementById('det-img').alt = nombreFinal;
+            document.getElementById('det-description').innerText = descripcionFinal;
+            document.title = "Botargas Shopping - " + nombreFinal;
+        }
+
+        // --- LÓGICA DE CARRITO (SE MANTIENE IGUAL) ---
+        let contadorCarrito = parseInt(localStorage.getItem('cantidadCarrito')) || 0;
+        const badge = document.getElementById('cart-count');
+        if (badge) badge.innerText = contadorCarrito;
+
+        const txtStock = document.getElementById('product-stock');
+        const btnAdd = document.getElementById('btn-add-cart');
+        const btnComprar = document.getElementById('btn-comprar');
+
+        function actualizarPantallaStock() {
+            if (productoActual.stock > 0) {
+                if (txtStock) {
+                    txtStock.innerText = `Stock disponible: ${productoActual.stock} unidades`;
+                    txtStock.style.color = "#2ecc71";
+                }
+                if (btnAdd) { btnAdd.disabled = false; btnAdd.style.opacity = "1"; }
+            } else {
+                if (txtStock) {
+                    txtStock.innerText = "¡Producto Agotado!";
+                    txtStock.style.color = "#ff4d4d";
+                }
+                if (btnAdd) { btnAdd.disabled = true; btnAdd.style.opacity = "0.5"; }
+            }
+        }
+
+        actualizarPantallaStock();
+
+       if (btnAdd) {
+            btnAdd.addEventListener('click', () => {
+                if (productoActual.stock > 0) {
+                    productoActual.stock--;
+                    const index = inventarioGlobal.findIndex(p => p.id === idNumerico);
+                    if (index !== -1) inventarioGlobal[index].stock = productoActual.stock;
+                    
+                    localStorage.setItem('inventarioBotargas', JSON.stringify(inventarioGlobal));
+                    actualizarPantallaStock();
+
+                    // --- 🚀 LÓGICA DE ALERTA DE STOCK BAJO (MENOS DE 10) ---
+                   // ... dentro de tu btnAdd.addEventListener ...
+if (productoActual.stock < 10) {
+    let alertas = JSON.parse(localStorage.getItem('alertasAdmin')) || [];
+    
+    // Verificamos si ya existe el ID para no duplicar
+    if (!alertas.find(a => a.id === idNumerico)) {
+        alertas.push({
+            id: idNumerico,
+            nombre: productoActual.nombre,
+            stockActual: productoActual.stock
+        });
+        localStorage.setItem('alertasAdmin', JSON.stringify(alertas));
+        console.log("¡Alerta creada!", alertas); // <--- DEBE SALIR ESTO EN LA CONSOLA DEL CLIENTE
+    }
+}
+
+                    contadorCarrito++; 
+                    if (badge) badge.innerText = contadorCarrito; 
+                    localStorage.setItem('cantidadCarrito', contadorCarrito);
+                }
+            });
+        }
+    </script>
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contáctanos - Botargas Shopping</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="main-header">
+    <div class="header-left">
+        <div class="back-container">
+            <a href="productos.html" class="back-btn">← Volver</a>
+        </div>
+    </div>
+
+    <div class="header-center"></div>
+
+    <div class="header-right">
+        <div class="menu-container">
+            <button class="menu-btn">☰ Menú</button>
+            <nav class="dropdown-menu">
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="contacto.html">Contacto</a>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="contacto-container">
+        <div class="contacto-logo-body">
+            <a href="index.html" class="logo-link">
+                <img src="botar.png" alt="Logo Solutions Shield" class="body-logo">
+            </a>
+        </div>
+
+        <h2>Contáctanos</h2>
+        
+        <div class="contacto-info">
+            <div class="info-item">
+                <span class="icon">📞</span>
+                <div>
+                    <strong>Teléfono:</strong>
+                    <p>+52 55 1234 5678</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <span class="icon">✉️</span>
+                <div>
+                    <strong>Correo Electrónico:</strong>
+                    <p>contacto@solutionsshield.com</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <span class="icon">🕒</span>
+                <div>
+                    <strong>Horario de Atención:</strong>
+                    <p>Lunes a Viernes: 9:00 AM - 6:00 PM</p>
+                    <p>Sábados: 10:00 AM - 2:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+    <footer>
+        <p>&copy; 2026 Botargas Shopping. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            const botonMenu = document.querySelector('.menu-btn');
+            const menuDesplegable = document.querySelector('.dropdown-menu');
+
+            if (botonMenu && menuDesplegable) {
+                botonMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menuDesplegable.style.display = (menuDesplegable.style.display === 'block' || menuDesplegable.style.display === 'flex') ? 'none' : 'flex';
+                });
+                document.addEventListener('click', function() {
+                    menuDesplegable.style.display = 'none';
+                });
+            }
+        };
+    </script>
+</body>
+</html>

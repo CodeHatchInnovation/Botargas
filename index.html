@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botargas Shopping - Inicio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="menu-container">
+            <button class="menu-btn">☰ Menú</button>
+            <nav class="dropdown-menu">
+                <a href="index.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="contacto.html">Contacto</a>
+                <li>
+            <a href="carrito.html" class="cart-btn">
+                🛒 Carrito <span id="cart-count">0</span>
+                </a>
+                </li>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="brand-header">
+            <a href="index.html">
+                <img src="botar.png" alt="Logo Botargas Shopping" class="logo">
+            </a>
+            <h1>Botargas Shopping</h1>
+        </div>
+        
+        <section class="about-us">
+            <h2>¿Quiénes somos?</h2>
+            <p>Somos una empresa apasionada por dar vida a la imaginación. Nos dedicamos al diseño, fabricación y venta de botargas de la más alta calidad, creadas para conectar de forma única con el público, potenciar marcas y transformar cualquier evento en una experiencia inolvidable. Combinamos talento artesanal, innovación técnica y los mejores materiales para ofrecer personajes cómodos, duraderos y con un gran impacto visual.</p>
+        </section>
+
+        <section class="info-grid">
+            <div class="info-box left">
+                <h3>Visión</h3>
+                <p>Ser la empresa líder en el mercado de venta de botargas a nivel nacional, reconocida por la innovación de nuestros diseños, el realismo de nuestros personajes y la excelencia en el servicio al cliente. Buscamos ser el aliado estratégico número uno para agencias de publicidad, productoras de eventos y marcas que desean dejar una huella imborrable en su audiencia.</p>
+            </div>
+            
+            <div class="info-box right">
+                <h3>Misión</h3>
+                <p>Ofrecer botargas excepcionales que superen las expectativas de nuestros clientes, brindando herramientas de animación y marketing de alto impacto. Nos comprometemos a fusionar la creatividad con la comodidad y resistencia en cada diseño, ayudando a las empresas a destacar y llevando alegría, magia y diversión a cada rincón.</p>
+            </div>
+
+            <div class="info-box left full-width-mobile">
+                <h3>Valores</h3>
+                <ul>
+                    <li><strong>Creatividad e Innovación:</strong> Rompemos el molde. Diseñamos con originalidad para que cada personaje tenga una personalidad única y cautivadora.</li>
+                    <li><strong>Calidad y Durabilidad:</strong> No escatimamos en materiales. Garantizamos acabados impecables, estructuras ligeras y texturas resistentes para el uso rudo.</li>
+                    <li><strong>Compromiso con el Cliente:</strong> Entendemos tus necesidades y entregamos a tiempo. Tu visión es nuestro proyecto más importante.</li>
+                    <li><strong>Seguridad y Confort:</strong> Diseñamos pensando en el animador; nuestras botargas cuentan con la ventilación, visibilidad y ligereza necesarias para un desempeño óptimo.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+<script>
+        // ¡AQUÍ LO PONES!
+        let cantidadActual = parseInt(localStorage.getItem('cantidadCarrito')) || 0;
+        document.getElementById('cart-count').innerText = cantidadActual;
+    </script>
+    <footer>
+        <p>&copy; 2026 Botargas Shopping. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
